@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <img src="{{ user.photo.url }}" alt="">
+        <h1>Username: {{ user.username }}</h1>
+        <p>Bio: {{ user.about }}</p>
+        <p>Age: {{ user.age }}</p>
+        <br>
+        <a href="{% url 'profile_edit' %}">Edit Profile</a>
+
+        <div class="container">
+            <h1>Your Posts:</h1>
+            {% for post in posts %}
+                <article class="entry">
+
+                {% if post.photo %}
+                <div class="entry-img">
+                    <img src="{{ post.photo.url }}" alt="" class="img-fluid">
+                </div>
+                {% endif %}
+
+                <h2 class="entry-title">
+                    <a href="{% url 'detail' post.pk %}">{{ post.title }}</a>
+                </h2>
+
+                <div class="entry-meta">
+                    <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="#"> {{ post.author }}</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-book"></i> <a href="{% url 'category' post.category %}"> {{ post.category }}</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i><time datetime="2020-01-01"> {{ post.date }}</time></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{% url 'detail' post.pk %}"> {{ post.comment_set.count }} Comments</a></li>
+                    </ul>
+                </div>
+
+                <div class="entry-content">
+                    <p>
+                    {{ post.excerpt }}
+                    </p>
+                    <div class="read-more">
+                    <a href="{% url 'detail' post.pk %}">Read More</a>
+                    </div>
+                </div>
+
+                </article><!-- End blog entry -->
+            {% empty %}
+                <li>No post yet.</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
